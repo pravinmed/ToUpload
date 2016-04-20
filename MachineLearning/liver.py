@@ -9,6 +9,8 @@ from tester import dump_classifier_and_data
 import numpy
 
 ### Task 1: Select what features you'll use.
+## This uses the Naive Gaussian Byesian Classifiers. The dataset is from the below location 
+# https://archive.ics.uci.edu/ml/datasets/Hepatitis
 
 features_list = ['poi','age','sex','steroid','antivirals','fatigue','malaise','anorexia','liver_big',\
                  'liver_Firm','spleen_palpable','spiders','ascites','varices','bilirubin',\
@@ -73,13 +75,13 @@ print 'features after scaling'
 print numpy.array(features)
 selectK = SelectKBest(f_classif,len(features_list)-1)
 
-#selectK = SelectKBest(chi2,6)
-#selectK = SelectPercentile(f_classif,60)
+
 features = selectK.fit_transform(features,labels)
 
 in_max_scaler = preprocessing.MinMaxScaler()
 features = in_max_scaler.fit_transform(features)
 from sklearn.pipeline import Pipeline
+# Use the gaussian classifiers for the classification
 pipeline = Pipeline(steps=[    
 #('scaling',preprocessing.MinMaxScaler()),
 #('pca',PCA(n_components=2)),
@@ -103,17 +105,9 @@ param_grid = {
 from sklearn import svm
 from sklearn import tree
 from sklearn.svm import SVC
-#clf = svm.LinearSVC(fit_intercept=True,max_iter=1000,tol=0.01)
 
-#clf = SVC(100.0,kernel="linear",tol=0.01)
-#clf = tree.DecisionTreeClassifier()
-#clf = linear_model.LogisticRegression(C=1e-3)
-#clf = RandomForestClassifier(n_estimators=5,min_samples_leaf=2)
 parameters = {'kernel':'linear', 'C':[1, 10]}
-#svr = svm.SVC()
-#clf = GridSearchCV(svr, parameters)
-#clf = GridSearchCV(SVC(kernel='linear', class_weight='auto'), param_grid)
-#clf = GaussianNB()
+
 clf = pipeline
 print clf
 
